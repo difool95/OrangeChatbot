@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/chatbotApi/static/css/main.f007fe50.css",
-    "main.js": "/chatbotApi/static/js/main.3ef951b2.js",
-    "static/js/27.2e056ed8.chunk.js": "/chatbotApi/static/js/27.2e056ed8.chunk.js",
-    "index.html": "/chatbotApi/index.html"
+    "main.css": "/OrangeChatbot/static/css/main.f007fe50.css",
+    "main.js": "/OrangeChatbot/static/js/main.30767f46.js",
+    "static/js/27.2e056ed8.chunk.js": "/OrangeChatbot/static/js/27.2e056ed8.chunk.js",
+    "index.html": "/OrangeChatbot/index.html"
   },
   "entrypoints": [
     "static/css/main.f007fe50.css",
-    "static/js/main.3ef951b2.js"
+    "static/js/main.30767f46.js"
   ]
 }
