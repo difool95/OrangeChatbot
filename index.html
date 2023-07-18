@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>My Web Page</title>
   <style>
     body {
-        margin: 0;
+      margin: 0;
       padding: 0;
       height: 100vh;
       overflow-y: scroll;
@@ -12,7 +13,8 @@
       flex-direction: column;
       background: orange;
     }
-      #speech-button {
+
+    #speech-button {
       position: absolute;
       top: 15px;
       left: 15px;
@@ -21,8 +23,10 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      width: 80px; /* Modify the width */
-      height: 25px; /* Modify the height */
+      width: 80px;
+      /* Modify the width */
+      height: 25px;
+      /* Modify the height */
     }
 
     #speech-button:hover {
@@ -34,7 +38,8 @@
       color: #999999;
       cursor: not-allowed;
     }
-       .chatbot-container {
+
+    .chatbot-container {
       position: fixed;
       bottom: 20px;
       right: 20px;
@@ -45,16 +50,18 @@
       transition: transform 0.3s ease-in-out;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
-.chatbot-container:hover {
+
+    .chatbot-container:hover {
       transform: translateY(-10px);
     }
 
-     .content {
+    .content {
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
-      min-height: 500px; /* Adjust the height as needed */
+      min-height: 500px;
+      /* Adjust the height as needed */
     }
 
     .div1 {
@@ -68,11 +75,11 @@
     .div3 {
       background-color: lightpink;
     }
-
   </style>
 </head>
+
 <body>
-   <div class="content div1">
+  <div class="content div1">
     <h1>Div 1</h1>
   </div>
 
@@ -83,55 +90,63 @@
   <div class="content div3">
     <h1>Div 3</h1>
   </div>
- <div class="chatbot-container">
-    <iframe id="myIframe" src="https://maginater.com/chatbotIntegre/" height="350rem" width="350rem" style="border: none;"></iframe>
-    <button id ="speech-button" onclick="speaking()" disabled>Speak</button>
+  <div class="chatbot-container">
+    <iframe id="myIframe" src="https://maginater.com/chatbotIntegre/" height="350rem" width="350rem"
+      style="border: none;"></iframe>
+    <button id="speech-button" onclick="speaking()" disabled>Speak</button>
 
   </div>
-   <script>
+  <script>
     let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    let speechRecognitionList = new SpeechGrammarList();
+    // Define the words or phrases you want to adapt the model to
+    let grammar = '#JSGF V1.0; grammar adaptedWords; public <adaptedWords> = carte sim | code puke | offre dawakh ;';
+    // Load the grammar into the speechRecognitionList
+    speechRecognitionList.addFromString(grammar, 1);
+    recognition.grammars = speechRecognitionList;
+
     //recognition.continuous = true;
     let language = "";
     const iframe = document.getElementById('myIframe').contentWindow;
     let voiceMessage = "";
     var speechTimeout;
     var isTalking = false;
-    function speaking(){
-      if(language != ""){
-            var speech = true;
-       window.SpeechRecognition = window.webkitSpeechRecognition;
-       if(language == "french") recognition.lang = "fr-FR";
-       else if(language == "english") recognition.lang = "en-US";
-       else if(language == "arabic") recognition.lang = "ar-TN";
-       recognition.interimResults = true;
-       recognition.addEventListener('result', speechResultHandler);
-       recognition.addEventListener('speechend', speechEndHandler);
-      if (speech == true) {
-        recognition.start();
-      } 
-      }   
+    function speaking() {
+      if (language != "") {
+        var speech = true;
+        window.SpeechRecognition = window.webkitSpeechRecognition;
+        if (language == "french") recognition.lang = "fr-FR";
+        else if (language == "english") recognition.lang = "en-US";
+        else if (language == "arabic") recognition.lang = "ar-TN";
+        recognition.interimResults = true;
+        recognition.addEventListener('result', speechResultHandler);
+        recognition.addEventListener('speechend', speechEndHandler);
+        if (speech == true) {
+          recognition.start();
+        }
+      }
     }
 
-    document.addEventListener('keydown', function(event) {
-  if (event.key === 'a' || event.key === 'A') {
-    // Code to execute when the "A" key is pressed
-          console.log(isTalking);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'a' || event.key === 'A') {
+        // Code to execute when the "A" key is pressed
+        console.log(isTalking);
 
-  }
-});
+      }
+    });
 
     function speechResultHandler(e) {
-    voiceMessage = Array.from(e.results)
-      .map(result => result[0])
-      .map(result => result.transcript)
-      .join('')
-  }
-  function speechEndHandler() {
+      voiceMessage = Array.from(e.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('')
+    }
+    function speechEndHandler() {
       if (voiceMessage != "") document.getElementById("speech-button").style.display = "none";
       recognition.stop(); // Stop the recognition process
       //SEND VOICE MESSAGE WITH API TO EMBEDDED REACT JS
       sendMessageToIframe();
-  }
+    }
 
     // Send a message to the iframe
     function sendMessageToIframe() {
@@ -139,14 +154,15 @@
       iframe.postMessage(message, 'https://maginater.com/chatbotIntegre/'); // Replace with your React app's URL
     }
 
-     window.addEventListener('message', function (event) {
+    window.addEventListener('message', function (event) {
       console.log("the language is: " + event.data); // Message received from parent
       language = event.data;
       document.getElementById("speech-button").disabled = false;
-      if(event.data == "can speak") {
-          document.getElementById("speech-button").style.display = "inline";
+      if (event.data == "can speak") {
+        document.getElementById("speech-button").style.display = "inline";
       }
     });
   </script>
 </body>
+
 </html>
