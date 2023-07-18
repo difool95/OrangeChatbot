@@ -98,13 +98,16 @@
   </div>
   <script>
     let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    let speechRecognitionList = new SpeechGrammarList();
     // Define the words or phrases you want to adapt the model to
-    let grammar = '#JSGF V1.0; grammar adaptedWords; public <adaptedWords> = carte sim | code puke | offre dawakh ;';
-    // Load the grammar into the speechRecognitionList
-    speechRecognitionList.addFromString(grammar, 1);
-    recognition.grammars = speechRecognitionList;
+    let adaptedWords = ['carte sim', 'code puke', 'code PIN'];
 
+    // Set the adaptedWords as the grammars for recognition
+    recognition.grammars = adaptedWords.map((word) => {
+      return {
+        src: word,
+        lang: 'en-US'
+      };
+    });
     //recognition.continuous = true;
     let language = "";
     const iframe = document.getElementById('myIframe').contentWindow;
