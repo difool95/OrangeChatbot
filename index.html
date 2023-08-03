@@ -91,7 +91,7 @@
     <h1>Div 3</h1>
   </div>
   <div class="chatbot-container">
-    <iframe id="myIframe" src="https://maginater.com/chatbotIntegre/" height="350rem" width="350rem"
+    <iframe id="myIframe" src="http://localhost:3000/chatbotIntegre" height="350rem" width="350rem"
       style="border: none;"></iframe>
     <button id="speech-button" onclick="speaking()" disabled>Speak</button>
 
@@ -99,15 +99,7 @@
   <script>
     let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     // Define the words or phrases you want to adapt the model to
-    let adaptedWords = ['carte sim', 'code puke', 'code PIN'];
 
-    // Set the adaptedWords as the grammars for recognition
-    recognition.grammars = adaptedWords.map((word) => {
-      return {
-        src: word,
-        lang: 'en-US'
-      };
-    });
     //recognition.continuous = true;
     let language = "";
     const iframe = document.getElementById('myIframe').contentWindow;
@@ -154,7 +146,7 @@
     // Send a message to the iframe
     function sendMessageToIframe() {
       const message = voiceMessage;
-      iframe.postMessage(message, 'https://maginater.com/chatbotIntegre/'); // Replace with your React app's URL
+      iframe.postMessage(message, 'http://localhost:3000/chatbotIntegre'); // Replace with your React app's URL
     }
 
     window.addEventListener('message', function (event) {
