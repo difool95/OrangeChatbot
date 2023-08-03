@@ -101,24 +101,22 @@
     // Define the words or phrases you want to adapt the model to
 
     //recognition.continuous = true;
-    let language = "";
+    let language = "english";
     const iframe = document.getElementById('myIframe').contentWindow;
     let voiceMessage = "";
     var speechTimeout;
     var isTalking = false;
     function speaking() {
-      if (language != "") {
-        var speech = true;
-        window.SpeechRecognition = window.webkitSpeechRecognition;
-        if (language == "french") recognition.lang = "fr-FR";
-        else if (language == "english") recognition.lang = "en-US";
-        else if (language == "arabic") recognition.lang = "ar-TN";
-        recognition.interimResults = true;
-        recognition.addEventListener('result', speechResultHandler);
-        recognition.addEventListener('speechend', speechEndHandler);
-        if (speech == true) {
-          recognition.start();
-        }
+      var speech = true;
+      window.SpeechRecognition = window.webkitSpeechRecognition;
+      if (language == "french") recognition.lang = "fr-FR";
+      else if (language == "english") recognition.lang = "en-US";
+      else if (language == "arabic") recognition.lang = "ar-TN";
+      recognition.interimResults = true;
+      recognition.addEventListener('result', speechResultHandler);
+      recognition.addEventListener('speechend', speechEndHandler);
+      if (speech == true) {
+        recognition.start();
       }
     }
 
