@@ -144,7 +144,7 @@
     // Send a message to the iframe
     function sendMessageToIframe() {
       const message = voiceMessage;
-      iframe.postMessage(message, 'https://maginater.com/chatbotIntegre'); // Replace with your React app's URL
+      iframe.postMessage(message, 'http://localhost:3000/chatbotIntegre'); // Replace with your React app's URL
     }
 
     window.addEventListener('message', function (event) {
