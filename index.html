@@ -91,7 +91,7 @@
     <h1>Div 3</h1>
   </div>
   <div class="chatbot-container">
-    <iframe id="myIframe" src="http://localhost:3000/chatbotIntegre?token=f3914d163fb2023d177e1e069921a999" height="350rem" width="350rem"
+    <iframe id="myIframe" src="http://localhost:3000/chatbotIntegre?token=7cf953fd3c98f4848395e2f6a1882dfc" height="350rem" width="350rem"
       style="border: none;"></iframe>
     <button id="speech-button" onclick="speaking()">Speak</button>
 
@@ -144,7 +144,7 @@
     // Send a message to the iframe
     function sendMessageToIframe() {
       const message = voiceMessage;
-      iframe.postMessage(message, 'http://localhost:3000/chatbotIntegre?token=f3914d163fb2023d177e1e069921a999'); // Replace with your React app's URL
+      iframe.postMessage(message, 'http://localhost:3000/chatbotIntegre?token=7cf953fd3c98f4848395e2f6a1882dfc'); // Replace with your React app's URL
     }
 
     window.addEventListener('message', function (event) {
