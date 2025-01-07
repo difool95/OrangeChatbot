@@ -107,7 +107,7 @@
       <div class="input-button-container">
         <input id="message-input" type="text" placeholder="Type Something to RAFIKA" maxlength="50" />
         <button id="send-button" onclick="sendingText()" onmouseover="hoverButton()" onmouseout="leaveButton()">
-          <img id="button-image" src="paper-plane.png" alt="Send" />
+          <img id="button-image" src="/paper-plane.png" alt="Send" />
         </button>
       </div>
     </div>
@@ -149,12 +149,12 @@
 	
     function hoverButton() {
       // Change to the "send-mail.png" image on hover
-      document.getElementById("button-image").src = "send-mail.png";
+      document.getElementById("button-image").src = "/send-mail.png";
     }
 
     function leaveButton() {
       // Revert to the original "paper-plane.png" image
-      document.getElementById("button-image").src = "paper-plane.png";
+      document.getElementById("button-image").src = "/paper-plane.png";
     }
 	
 </script>
