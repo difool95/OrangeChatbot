@@ -103,7 +103,7 @@
 	<body>
   <div class="chatbot-container">
     <div class="iframe-container">
-      <iframe id="myframechatbot" src="https://mouvmnt.com/chatbotIntegre?token=azeaze"></iframe>
+      <iframe id="myframechatbot" src="https://www.mouvmnt.com/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr"></iframe>
       <div class="input-button-container">
         <input id="message-input" type="text" placeholder="Type Something to RAFIKA" maxlength="50" />
         <button id="send-button" onclick="sendingText()" onmouseover="hoverButton()" onmouseout="leaveButton()">
@@ -140,7 +140,7 @@
 	  var inputValue = messageInput.value;
 		if (inputValue != ""){   
 	      document.getElementById("send-button").style.display = "none";
-          iframe.postMessage(inputValue, 'https://mouvmnt.com/chatbotIntegre?token=azeaze'); // Replace with your React app's URL
+          iframe.postMessage(inputValue, 'https://www.mouvmnt.com/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr'); // Replace with your React app's URL
 		  messageInput.value = ""; // Clear the input field after sending
 			firstTime = false;
 	  }
