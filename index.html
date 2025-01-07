@@ -2,41 +2,59 @@
 <html>
 
 <head>
-  <title>My Web Page</title>
-  <style>
-    body {
+<style>
+	body {
       margin: 0;
       padding: 0;
       height: 100vh;
       overflow-y: scroll;
       display: flex;
       flex-direction: column;
-      background: orange;
     }
-
-    #speech-button {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background-color: #ff0000;
-      color: #fff;
+    #send-button {
+      background-color: #ffdd00; /* Yellow color */
       border: none;
-      border-radius: 4px;
+      border-radius: 50%; /* Circular shape */
       cursor: pointer;
-      width: 80px;
-      /* Modify the width */
+      width: 63px; /* Match input field height */
+      height: 63px;
+      margin-left: 20px; /* Increase spacing between input field and button */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    #send-button img {
+      width: 25px; /* Adjust image size as needed */
       height: 25px;
-      /* Modify the height */
     }
 
-    #speech-button:hover {
-      background-color: #cc0000;
+    #send-button:hover {
+      background-color: black; /* Change background to black on hover */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Darker shadow effect */
     }
 
-    #speech-button:disabled {
-      background-color: gray;
-      color: #999999;
-      cursor: not-allowed;
+    #message-input {
+      width: 270px;
+      height: 55px;
+      padding: 10px;
+      border: 1px solid transparent; /* No outline initially */
+      border-radius: 40px; /* Rounded corners */
+      background-color: #f0f3f3; /* Light background color */
+      outline: none;
+      text-align: center; /* Align placeholder text in the center */
+      line-height: 45px; /* Center placeholder vertically */
+      transition: border-color 0.3s ease;
+    }
+
+    #message-input::placeholder {
+      text-align: center; /* Center the placeholder text */
+    }
+
+    #message-input:focus {
+      border-color: black; /* Black outline when focused */
     }
 
     .chatbot-container {
@@ -48,114 +66,98 @@
       border-radius: 8px;
       z-index: 9999;
       transition: transform 0.3s ease-in-out;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
     .chatbot-container:hover {
       transform: translateY(-10px);
     }
 
-    .content {
+    .iframe-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+		align-items: center;
+    }
+
+    .input-button-container {
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 20px;
-      min-height: 500px;
-      /* Adjust the height as needed */
+      margin-top: 10px;
     }
-
-    .div1 {
-      background-color: lightblue;
+    #myframechatbot {
+      border-radius: 450px;
+      width: 450px;
+      height: 450px;
+      border: none;
+      z-index: 3000;
     }
-
-    .div2 {
-      background-color: lightgreen;
+	  /* Hide chatbot on screens less than 768px wide */
+  @media only screen and (max-width: 768px) {
+    .chatbot-container {
+      display: none;
     }
-
-    .div3 {
-      background-color: lightpink;
-    }
+  }
   </style>
 </head>
-
-<body>
-  <div class="content div1">
-    <h1>Div 1</h1>
-  </div>
-
-  <div class="content div2">
-    <h1>Div 2</h1>
-  </div>
-
-  <div class="content div3">
-    <h1>Div 3</h1>
-  </div>
+	<body>
   <div class="chatbot-container">
-    <iframe id="myIframe" src="http://localhost:3000/chatbotIntegre?token=e2fb1f01c3c6f53e0b7d6c18f73c0f21" height="350rem" width="350rem"
-      style="border: none;"></iframe>
-    <button id="speech-button" onclick="speaking()">Speak</button>
-
+    <div class="iframe-container">
+      <iframe id="myframechatbot" src="https://mouvmnt.com/chatbotIntegre?token=azeaze"></iframe>
+      <div class="input-button-container">
+        <input id="message-input" type="text" placeholder="Type Something to RAFIKA" maxlength="50" />
+        <button id="send-button" onclick="sendingText()" onmouseover="hoverButton()" onmouseout="leaveButton()">
+          <img id="button-image" src="paper-plane.png" alt="Send" />
+        </button>
+      </div>
+    </div>
   </div>
-  <script>
-    let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    // Define the words or phrases you want to adapt the model to
 
-    //recognition.continuous = true;
-    let language = "english";
-    const iframe = document.getElementById('myIframe').contentWindow;
-    let voiceMessage = "";
-    var speechTimeout;
-    var isTalking = false;
-    function speaking() {
-      var speech = true;
-      window.SpeechRecognition = window.webkitSpeechRecognition;
-      if (language == "french") recognition.lang = "fr-FR";
-      else if (language == "english") recognition.lang = "en-US";
-      else if (language == "arabic") recognition.lang = "ar-TN";
-      recognition.interimResults = true;
-      recognition.addEventListener('result', speechResultHandler);
-      recognition.addEventListener('speechend', speechEndHandler);
-      if (speech == true) {
-        recognition.start();
-      }
-    }
+<script>
+ 	const iframe = document.getElementById('myframechatbot').contentWindow;
+	const messageInput = document.getElementById('message-input');
+	var firstTime = true;
+	// Disable the buttons
+	document.getElementById("send-button").style.display = "none";
 
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'a' || event.key === 'A') {
-        // Code to execute when the "A" key is pressed
-        console.log(isTalking);
-
-      }
+	 window.addEventListener('message', function (event) {
+		 console.log(event.data);
+		  if(event.data == "start") {
+			//document.getElementById("myframechatbot").style.zIndex = 0;
+			if(firstTime){
+				document.getElementById("send-button").style.display = "inline";
+			}
+      	}
+		 else if (event.data == "loaded"){
+		 			//disable Loading
+		 }
+      	else if(event.data == "can speak") {
+			document.getElementById("send-button").style.display = "inline";
+      	}
     });
-
-    function speechResultHandler(e) {
-      voiceMessage = Array.from(e.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join('')
-    }
-    function speechEndHandler() {
-      if (voiceMessage != "") document.getElementById("speech-button").style.display = "none";
-      recognition.stop(); // Stop the recognition process
-      //SEND VOICE MESSAGE WITH API TO EMBEDDED REACT JS
-      sendMessageToIframe();
-    }
-
-    // Send a message to the iframe
-    function sendMessageToIframe() {
-      const message = voiceMessage;
-      iframe.postMessage(message, 'http://localhost:3000/chatbotIntegre?token=e2fb1f01c3c6f53e0b7d6c18f73c0f21'); // Replace with your React app's URL
+	
+	function sendingText(){
+	  var inputValue = messageInput.value;
+		if (inputValue != ""){   
+	      document.getElementById("send-button").style.display = "none";
+          iframe.postMessage(inputValue, 'https://mouvmnt.com/chatbotIntegre?token=azeaze'); // Replace with your React app's URL
+		  messageInput.value = ""; // Clear the input field after sending
+			firstTime = false;
+	  }
+	}
+	
+	
+    function hoverButton() {
+      // Change to the "send-mail.png" image on hover
+      document.getElementById("button-image").src = "send-mail.png";
     }
 
-    window.addEventListener('message', function (event) {
-      console.log("the language is: " + event.data); // Message received from parent
-      language = event.data;
-      document.getElementById("speech-button").disabled = false;
-      if (event.data == "can speak") {
-        document.getElementById("speech-button").style.display = "inline";
-      }
-    });
-  </script>
+    function leaveButton() {
+      // Revert to the original "paper-plane.png" image
+      document.getElementById("button-image").src = "paper-plane.png";
+    }
+	
+</script>
 </body>
 
 </html>
