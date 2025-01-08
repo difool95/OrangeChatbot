@@ -114,6 +114,28 @@
   </div>
 
 <script>
+	 const generateSessionId = () => {
+    return 'session-' + Math.random().toString(36).substr(2, 9);
+  };
+
+  const getOrCreateSessionId = () => {
+    const cookies = document.cookie.split(';');
+    let sessionId = null;
+    cookies.forEach(cookie => {
+      const [key, value] = cookie.trim().split('=');
+      if (key === 'session_id') {
+        sessionId = value;
+      }
+    });
+
+    if (!sessionId) {
+      sessionId = generateSessionId();
+      document.cookie = `session_id=${sessionId}; path=/;`;
+    }
+    return sessionId;
+  };
+	    const session_id = getOrCreateSessionId();
+	console.log("la session id est " +session_id);
  	const iframe = document.getElementById('myframechatbot').contentWindow;
 	const messageInput = document.getElementById('message-input');
 	var firstTime = true;
