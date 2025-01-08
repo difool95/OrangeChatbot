@@ -105,7 +105,7 @@
     <div class="iframe-container">
       <iframe id="myframechatbot" src="http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr"></iframe>
       <div class="input-button-container">
-        <input id="message-input" type="text" placeholder="Type Something to RAFIKA" maxlength="50" />
+        <input id="message-input" type="text" placeholder="Type Something to Louna" maxlength="50" />
         <button id="send-button" onclick="sendingText()" onmouseover="hoverButton()" onmouseout="leaveButton()">
           <img id="button-image" src="paper-plane.png" alt="Send" />
         </button>
@@ -121,7 +121,6 @@
 	document.getElementById("send-button").style.display = "none";
 
 	 window.addEventListener('message', function (event) {
-		 console.log(event.data);
 		  if(event.data == "start") {
 			//document.getElementById("myframechatbot").style.zIndex = 0;
 			if(firstTime){
