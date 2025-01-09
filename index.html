@@ -1,168 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chatbot</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow-y: scroll;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chatbot-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: transparent;
-      padding: 10px;
-      border-radius: 8px;
-      z-index: 9999;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    .chatbot-container:hover {
-      transform: translateY(-10px);
-    }
-
-    .iframe-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #myframechatbot {
-      border-radius: 50%;
-      width: 450px;
-      height: 450px;
-      border: none;
-      z-index: 3000;
-    }
-
-    .input-button-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-    }
-
-    #message-input {
-      width: 270px;
-      height: 55px;
-      padding: 10px;
-      border: 1px solid transparent;
-      border-radius: 40px;
-      background-color: #f0f3f3;
-      outline: none;
-      text-align: center;
-      line-height: 45px;
-      transition: border-color 0.3s ease;
-    }
-
-    #message-input::placeholder {
-      text-align: center;
-    }
-
-    #message-input:focus {
-      border-color: black;
-    }
-
-    #send-button {
-      background-color: #ffdd00;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      width: 63px;
-      height: 63px;
-      margin-left: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      transition: box-shadow 0.3s ease, background-color 0.3s ease;
-    }
-
-    #send-button img {
-      width: 25px;
-      height: 25px;
-    }
-
-    #send-button:hover {
-      background-color: black;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Hide chatbot on smaller screens */
-    @media only screen and (max-width: 768px) {
-      .chatbot-container {
-        display: none;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="chatbot-container">
-    <div class="iframe-container">
-      <iframe id="myframechatbot" src="about:blank" title="Chatbot"></iframe>
-      <div class="input-button-container">
-        <input id="message-input" type="text" placeholder="Type something to Louna" maxlength="50" aria-label="Message input" />
-        <button id="send-button" onclick="sendMessage()" onmouseover="hoverButton()" onmouseout="leaveButton()">
-          <img id="button-image" src="paper-plane.png" alt="Send" />
-        </button>
-      </div>
+<div style="position: fixed; bottom: 20px; right: 20px; background-color: transparent; padding: 10px; border-radius: 8px; z-index: 9999; transition: transform 0.3s ease-in-out;"
+     onmouseover="this.style.transform='translateY(-10px)'" 
+     onmouseout="this.style.transform='translateY(0)'">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <iframe id="myframechatbot" src="http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr" 
+            title="Chatbot" 
+            style="border-radius: 50%; width: 450px; height: 450px; border: none; z-index: 3000;">
+    </iframe>
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+      <input id="message-input" type="text" placeholder="Type something to Louna" maxlength="50" aria-label="Message input"
+             style="width: 270px; height: 55px; padding: 10px; border: 1px solid transparent; border-radius: 40px; background-color: #f0f3f3; outline: none; text-align: center; line-height: 45px; transition: border-color 0.3s ease;"
+             onfocus="this.style.borderColor='black'" 
+             onblur="this.style.borderColor='transparent'" />
+      <button id="send-button" onclick="sendMessage()" 
+              style="background-color: #ffdd00; border: none; border-radius: 50%; cursor: pointer; width: 63px; height: 63px; margin-left: 20px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); transition: box-shadow 0.3s ease, background-color 0.3s ease;"
+              onmouseover="hoverButton()" 
+              onmouseout="leaveButton()">
+        <img id="button-image" src="https://mouvmnt.com/chatbotIntegre/images/paper-plane.png" alt="Send" style="width: 25px; height: 25px;" />
+      </button>
     </div>
   </div>
+</div>
 
-  <script>
-    const iframe = document.getElementById('myframechatbot');
-    const messageInput = document.getElementById('message-input');
-    const sendButton = document.getElementById('send-button');
+<script>
+  const iframe = document.getElementById('myframechatbot');
+  const messageInput = document.getElementById('message-input');
+  const sendButton = document.getElementById('send-button');
 
-    // Customizable Parameters
-    const chatbotUrl = 'http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr';
-
-    // Set iframe source dynamically
-    iframe.src = 'http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr';
-
-    // Handle messages from the iframe
-    window.addEventListener('message', (event) => {
-      switch (event.data) {
-        case "start":
-          sendButton.style.display = "inline";
-          break;
-        case "loaded":
-          iframe.contentWindow.postMessage('frontHost', chatbotUrl);
-          break;
-        case "can speak":
-          sendButton.style.display = "inline";
-          break;
-      }
-    });
-    
-    // Send message to the iframe
-    function sendMessage() {
-      const inputValue = messageInput.value.trim();
-      if (inputValue) {
-        sendButton.style.display = "none";
-        iframe.contentWindow.postMessage(inputValue, chatbotUrl);
-        messageInput.value = ""; // Clear input field
-      }
+  // Handle messages from the iframe
+  window.addEventListener('message', (event) => {
+    switch (event.data) {
+      case "start":
+        sendButton.style.display = "inline";
+        break;
+      case "loaded":
+        iframe.contentWindow.postMessage('frontHost', iframe.src);
+        break;
+      case "can speak":
+        sendButton.style.display = "inline";
+        break;
     }
+  });
 
-    // Button hover effects
-    function hoverButton() {
-      document.getElementById("button-image").src = "send-mail.png";
+  // Send message to the iframe
+  function sendMessage() {
+    const inputValue = messageInput.value.trim();
+    if (inputValue) {
+      sendButton.style.display = "none";
+      iframe.contentWindow.postMessage(inputValue, iframe.src);
+      messageInput.value = ""; // Clear input field
     }
+  }
 
-    function leaveButton() {
-      document.getElementById("button-image").src = "paper-plane.png";
-    }
-  </script>
-</body>
+  // Button hover effects
+  function hoverButton() {
+    document.getElementById("button-image").src = "https://mouvmnt.com/chatbotIntegre/images/send-mail.png";
+  }
 
-</html>
+  function leaveButton() {
+    document.getElementById("button-image").src = "https://mouvmnt.com/chatbotIntegre/images/paper-plane.png";
+  }
+</script>
