@@ -124,17 +124,13 @@
     const sendButton = document.getElementById('send-button');
 
     // Customizable Parameters
-    const chatbotUrl = "http://localhost:3000/chatbotIntegre/";
-    const token = "f3914d163fb2023d177e1e069921a999";
-    const lang = "fr";
+    const chatbotUrl = 'http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr';
 
     // Set iframe source dynamically
-    iframe.src = `${chatbotUrl}?token=${token}&lang=${lang}`;
+    iframe.src = 'http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr';
 
     // Handle messages from the iframe
     window.addEventListener('message', (event) => {
-      if (event.origin !== chatbotUrl) return; // Validate origin for security
-
       switch (event.data) {
         case "start":
           sendButton.style.display = "inline";
@@ -147,7 +143,7 @@
           break;
       }
     });
-
+    
     // Send message to the iframe
     function sendMessage() {
       const inputValue = messageInput.value.trim();
