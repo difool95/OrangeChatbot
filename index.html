@@ -128,7 +128,7 @@
 			}
       	}
 		 else if (event.data == "loaded"){
-    			    console.log('Fronthost:', event.origin);		//disable Loading
+          		iframe.postMessage('frontHost', 'http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr'); // Replace with your React app's URL
 		 }
       	else if(event.data == "can speak") {
 			document.getElementById("send-button").style.display = "inline";
