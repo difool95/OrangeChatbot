@@ -1,60 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-<style>
-	body {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot</title>
+  <style>
+    body {
       margin: 0;
       padding: 0;
       height: 100vh;
       overflow-y: scroll;
       display: flex;
       flex-direction: column;
-    }
-    #send-button {
-      background-color: #ffdd00; /* Yellow color */
-      border: none;
-      border-radius: 50%; /* Circular shape */
-      cursor: pointer;
-      width: 63px; /* Match input field height */
-      height: 63px;
-      margin-left: 20px; /* Increase spacing between input field and button */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      transition: box-shadow 0.3s ease, background-color 0.3s ease;
-    }
-
-    #send-button img {
-      width: 25px; /* Adjust image size as needed */
-      height: 25px;
-    }
-
-    #send-button:hover {
-      background-color: black; /* Change background to black on hover */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Darker shadow effect */
-    }
-
-    #message-input {
-      width: 270px;
-      height: 55px;
-      padding: 10px;
-      border: 1px solid transparent; /* No outline initially */
-      border-radius: 40px; /* Rounded corners */
-      background-color: #f0f3f3; /* Light background color */
-      outline: none;
-      text-align: center; /* Align placeholder text in the center */
-      line-height: 45px; /* Center placeholder vertically */
-      transition: border-color 0.3s ease;
-    }
-
-    #message-input::placeholder {
-      text-align: center; /* Center the placeholder text */
-    }
-
-    #message-input:focus {
-      border-color: black; /* Black outline when focused */
     }
 
     .chatbot-container {
@@ -73,11 +31,17 @@
     }
 
     .iframe-container {
-      position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-		align-items: center;
+      align-items: center;
+    }
+
+    #myframechatbot {
+      border-radius: 50%;
+      width: 450px;
+      height: 450px;
+      border: none;
+      z-index: 3000;
     }
 
     .input-button-container {
@@ -85,78 +49,124 @@
       justify-content: center;
       margin-top: 10px;
     }
-    #myframechatbot {
-      border-radius: 450px;
-      width: 450px;
-      height: 450px;
+
+    #message-input {
+      width: 270px;
+      height: 55px;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 40px;
+      background-color: #f0f3f3;
+      outline: none;
+      text-align: center;
+      line-height: 45px;
+      transition: border-color 0.3s ease;
+    }
+
+    #message-input::placeholder {
+      text-align: center;
+    }
+
+    #message-input:focus {
+      border-color: black;
+    }
+
+    #send-button {
+      background-color: #ffdd00;
       border: none;
-      z-index: 3000;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 63px;
+      height: 63px;
+      margin-left: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
     }
-	  /* Hide chatbot on screens less than 768px wide */
-  @media only screen and (max-width: 768px) {
-    .chatbot-container {
-      display: none;
+
+    #send-button img {
+      width: 25px;
+      height: 25px;
     }
-  }
+
+    #send-button:hover {
+      background-color: black;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Hide chatbot on smaller screens */
+    @media only screen and (max-width: 768px) {
+      .chatbot-container {
+        display: none;
+      }
+    }
   </style>
 </head>
-	<body>
+
+<body>
   <div class="chatbot-container">
     <div class="iframe-container">
-      <iframe id="myframechatbot" src="http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr"></iframe>
+      <iframe id="myframechatbot" src="about:blank" title="Chatbot"></iframe>
       <div class="input-button-container">
-        <input id="message-input" type="text" placeholder="Type Something to Louna" maxlength="50" />
-        <button id="send-button" onclick="sendingText()" onmouseover="hoverButton()" onmouseout="leaveButton()">
+        <input id="message-input" type="text" placeholder="Type something to Louna" maxlength="50" aria-label="Message input" />
+        <button id="send-button" onclick="sendMessage()" onmouseover="hoverButton()" onmouseout="leaveButton()">
           <img id="button-image" src="paper-plane.png" alt="Send" />
         </button>
       </div>
     </div>
   </div>
 
-<script>
- 	const iframe = document.getElementById('myframechatbot').contentWindow;
-	const messageInput = document.getElementById('message-input');
-	var firstTime = true;
-	// Disable the buttons
-	document.getElementById("send-button").style.display = "none";
+  <script>
+    const iframe = document.getElementById('myframechatbot');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
 
-	 window.addEventListener('message', function (event) {
-		  if(event.data == "start") {
-			//document.getElementById("myframechatbot").style.zIndex = 0;
-			if(firstTime){
-				document.getElementById("send-button").style.display = "inline";
-			}
-      	}
-		 else if (event.data == "loaded"){
-          		iframe.postMessage('frontHost', 'http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr'); // Replace with your React app's URL
-		 }
-      	else if(event.data == "can speak") {
-			document.getElementById("send-button").style.display = "inline";
-      	}
+    // Customizable Parameters
+    const chatbotUrl = "http://localhost:3000/chatbotIntegre/";
+    const token = "f3914d163fb2023d177e1e069921a999";
+    const lang = "fr";
+
+    // Set iframe source dynamically
+    iframe.src = `${chatbotUrl}?token=${token}&lang=${lang}`;
+
+    // Handle messages from the iframe
+    window.addEventListener('message', (event) => {
+      if (event.origin !== chatbotUrl) return; // Validate origin for security
+
+      switch (event.data) {
+        case "start":
+          sendButton.style.display = "inline";
+          break;
+        case "loaded":
+          iframe.contentWindow.postMessage('frontHost', chatbotUrl);
+          break;
+        case "can speak":
+          sendButton.style.display = "inline";
+          break;
+      }
     });
-	
-	function sendingText(){
-	  var inputValue = messageInput.value;
-		if (inputValue != ""){   
-	      document.getElementById("send-button").style.display = "none";
-          iframe.postMessage(inputValue, 'http://localhost:3000/chatbotIntegre/?token=f3914d163fb2023d177e1e069921a999&lang=fr'); // Replace with your React app's URL
-		  messageInput.value = ""; // Clear the input field after sending
-			firstTime = false;
-	  }
-	}
-	
-	
+
+    // Send message to the iframe
+    function sendMessage() {
+      const inputValue = messageInput.value.trim();
+      if (inputValue) {
+        sendButton.style.display = "none";
+        iframe.contentWindow.postMessage(inputValue, chatbotUrl);
+        messageInput.value = ""; // Clear input field
+      }
+    }
+
+    // Button hover effects
     function hoverButton() {
-      // Change to the "send-mail.png" image on hover
       document.getElementById("button-image").src = "send-mail.png";
     }
 
     function leaveButton() {
-      // Revert to the original "paper-plane.png" image
       document.getElementById("button-image").src = "paper-plane.png";
     }
-	
-</script>
+  </script>
 </body>
 
 </html>
